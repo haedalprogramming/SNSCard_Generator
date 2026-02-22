@@ -141,6 +141,9 @@ h2 {
 .control-group textarea {
     resize: vertical;
     font-family: inherit;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .control-group input[type="text"]:focus,

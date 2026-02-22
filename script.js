@@ -116,7 +116,7 @@ function drawNotePattern(bgColor, patternType) {
 }
 
 function drawCard() {
-    const text = textInput.value || '해달에듀 재원생을 모을 창의적인 아이디어를 작성해요';
+    const text = textInput.value || '해달에듀 재원생을 모을\n창의적인 아이디어를\n작성해요';
     const bgColor = bgColorInput.value;
     const textColor = textColorInput.value;
     const fontSize = parseInt(fontSizeInput.value);
@@ -180,24 +180,34 @@ function drawCard() {
     }
     
     const y = canvas.height / 2;
-    
     const maxWidth = canvas.width - 160;
-    const words = text.split(' ');
-    const lines = [];
-    let currentLine = words[0];
     
-    for (let i = 1; i < words.length; i++) {
-        const testLine = currentLine + ' ' + words[i];
-        const metrics = ctx.measureText(testLine);
-        
-        if (metrics.width > maxWidth) {
-            lines.push(currentLine);
-            currentLine = words[i];
-        } else {
-            currentLine = testLine;
+    // 줄바꿈(\n) 처리
+    const paragraphs = text.split('\n');
+    const lines = [];
+    
+    paragraphs.forEach(paragraph => {
+        if (paragraph.trim() === '') {
+            lines.push('');
+            return;
         }
-    }
-    lines.push(currentLine);
+        
+        const words = paragraph.split(' ');
+        let currentLine = words[0];
+        
+        for (let i = 1; i < words.length; i++) {
+            const testLine = currentLine + ' ' + words[i];
+            const metrics = ctx.measureText(testLine);
+            
+            if (metrics.width > maxWidth) {
+                lines.push(currentLine);
+                currentLine = words[i];
+            } else {
+                currentLine = testLine;
+            }
+        }
+        lines.push(currentLine);
+    });
     
     const lineHeight = fontSize * 1.4;
     const totalHeight = lines.length * lineHeight;
@@ -206,6 +216,13 @@ function drawCard() {
     lines.forEach((line, index) => {
         ctx.fillText(line, x, startY + (index * lineHeight));
     });
+}
+
+// textarea 자동 높이 조절
+function autoResizeTextarea() {
+    textInput.style.height = 'auto';
+    const newHeight = Math.min(textInput.scrollHeight, 200);
+    textInput.style.height = newHeight + 'px';
 }
 
 function applyPreset(presetName) {
@@ -242,7 +259,8 @@ function downloadCard() {
 
 textInput.addEventListener('input', () => {
     const length = textInput.value.length;
-    charCount.textContent = `${length} / 50`;
+    charCount.textContent = `${length} / 100`;
+    autoResizeTextarea();
     drawCard();
 });
 
