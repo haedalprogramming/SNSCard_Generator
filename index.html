@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNS 슬로건 카드 생성기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ SNS 슬로건 카드 생성기</h1>
+            <p>1줄 슬로건을 입력하고 멋진 카드를 만들어보세요</p>
+        </header>
+
+        <main>
+            <div class="editor">
+                <section class="preview-section">
+                    <h2>미리보기</h2>
+                    <canvas id="canvas" width="1080" height="1080"></canvas>
+                </section>
+
+                <section class="controls-section">
+                    <h2>설정</h2>
+                    
+                    <div class="control-group">
+                        <label for="text-input">슬로건 입력 (최대 50자)</label>
+                        <textarea 
+                            id="text-input" 
+                            placeholder="해달에듀 재원생을 모을 창의적인 아이디어를 작성해요"
+                            maxlength="50"
+                            rows="2"
+                        ></textarea>
+                        <span class="char-count">0 / 50</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <h3 class="section-title">🎨 배경 스타일</h3>
+
+                    <div class="control-group">
+                        <label>프리셋 선택</label>
+                        <div class="preset-buttons">
+                            <button class="preset-btn active" data-preset="minimal">미니멀</button>
+                            <button class="preset-btn" data-preset="gradient">그라데이션</button>
+                            <button class="preset-btn" data-preset="dark">다크모드</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>노트 배경 패턴</label>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-preset="noteYellow">연노랑 노트</button>
+                            <button class="preset-btn" data-preset="noteCyan">연청록 노트</button>
+                            <button class="preset-btn" data-preset="notePink">연분홍 노트</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="bg-image">배경 이미지 업로드</label>
+                        <input type="file" id="bg-image" accept="image/*">
+                        <button id="clear-bg-image" class="secondary-btn" style="display: none;">배경 이미지 제거</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="bg-color">배경 색상</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="bg-color" value="#ffffff">
+                            <div class="brand-colors">
+                                <button class="color-btn" data-color="#FFD506" style="background: #FFD506;" title="해달 옐로우"></button>
+                                <button class="color-btn" data-color="#3D3D3D" style="background: #3D3D3D;" title="다크"></button>
+                                <button class="color-btn" data-color="#4A4A4A" style="background: #4A4A4A;" title="다크 배경"></button>
+                                <button class="color-btn" data-color="#6B6B6B" style="background: #6B6B6B;" title="그레이"></button>
+                                <button class="color-btn" data-color="#F5F5F5" style="background: #F5F5F5;" title="라이트 배경"></button>
+                                <button class="color-btn" data-color="#FFF9E6" style="background: #FFF9E6;" title="크림 배경"></button>
+                                <button class="color-btn" data-color="#FFFFFF" style="background: #FFFFFF;" title="화이트"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+                    <h3 class="section-title">✏️ 텍스트 스타일</h3>
+
+                    <div class="control-group">
+                        <label for="text-color">텍스트 색상</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="text-color" value="#000000">
+                            <div class="brand-colors">
+                                <button class="color-btn" data-color="#FFD506" style="background: #FFD506;" title="해달 옐로우"></button>
+                                <button class="color-btn" data-color="#3D3D3D" style="background: #3D3D3D;" title="다크"></button>
+                                <button class="color-btn" data-color="#4A4A4A" style="background: #4A4A4A;" title="다크 배경"></button>
+                                <button class="color-btn" data-color="#6B6B6B" style="background: #6B6B6B;" title="그레이"></button>
+                                <button class="color-btn" data-color="#F5F5F5" style="background: #F5F5F5;" title="라이트 배경"></button>
+                                <button class="color-btn" data-color="#FFF9E6" style="background: #FFF9E6;" title="크림 배경"></button>
+                                <button class="color-btn" data-color="#FFFFFF" style="background: #FFFFFF;" title="화이트"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="font-size">글자 크기: <span id="font-size-value">64</span>px</label>
+                        <input type="range" id="font-size" min="30" max="120" value="64">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="text-align">텍스트 정렬</label>
+                        <select id="text-align">
+                            <option value="left">왼쪽</option>
+                            <option value="center" selected>중앙</option>
+                            <option value="right">오른쪽</option>
+                        </select>
+                    </div>
+
+                    <hr class="section-divider">
+                    <h3 class="section-title">📐 레이아웃</h3>
+
+                    <div class="control-group">
+                        <label for="card-ratio">카드 비율</label>
+                        <select id="card-ratio">
+                            <option value="4:5" selected>4:5 (Instagram)</option>
+                            <option value="9:16">9:16 (Story)</option>
+                            <option value="16:9">16:9 (Facebook, Twitter)</option>
+                            <option value="1:1">1:1 (Square)</option>
+                        </select>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="download-btn" class="primary-btn">📥 다운로드 (PNG)</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
